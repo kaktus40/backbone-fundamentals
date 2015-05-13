@@ -3234,6 +3234,7 @@ addBook: <span class="kw">function</span>( e ) {
         <span class="st">&quot;body-parser&quot;</span>: <span class="st">&quot;~1.9.1&quot;</span>
     }
 }</code></pre>
+<<<<<<< HEAD
 <p>Amongst other things, this file tells npm what the dependencies are for our project. On the command line, from the root of your project, type:</p>
 <pre class="sh"><code>npm install</code></pre>
 <p>You should see npm fetch the dependencies that we listed in our package.json and save them within a folder called node_modules.</p>
@@ -3298,10 +3299,18 @@ package.json</code></pre>
     <span class="dt">author</span>: String,
     <span class="dt">releaseDate</span>: Date
 });
+=======
+<p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
+<p>One potential solution to the problem could be to validate all fields and return all of the errors:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
+  <span class="kw">var</span> errors = {};
+>>>>>>> upstream/master
 
 <span class="co">//Models</span>
 <span class="kw">var</span> BookModel = <span class="ot">mongoose</span>.<span class="fu">model</span>( <span class="st">&#39;Book&#39;</span>, Book );
 
+<<<<<<< HEAD
 <span class="co">// Configure server</span>
 <span class="ot">app</span>.<span class="fu">configure</span>( <span class="kw">function</span>() {
     <span class="co">//parses request body and populates request.body</span>
@@ -3309,10 +3318,25 @@ package.json</code></pre>
 
     <span class="co">//checks request.body for HTTP method overrides</span>
     <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">methodOverride</span>() );
+=======
+  <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
+
+}</code></pre>
+<p>This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+$(<span class="kw">function</span>($) {
+
+  <span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+    <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
+      <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
+>>>>>>> upstream/master
 
     <span class="co">//perform route lookup based on url and HTTP method</span>
     <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">app</span>.<span class="fu">router</span> );
 
+<<<<<<< HEAD
     <span class="co">//Where to serve static content</span>
     <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">static</span>( <span class="ot">path</span>.<span class="fu">join</span>( application_root, <span class="st">&#39;site&#39;</span>) ) );
 
@@ -3495,6 +3519,33 @@ package.json</code></pre>
         }
     });
 });
+=======
+      <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
+
+    }
+
+  });
+
+  <span class="kw">var</span> Field = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
+    <span class="dt">events</span>: {<span class="dt">blur</span>: <span class="ch">&#39;validate&#39;</span>},
+
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+
+      <span class="kw">this</span>.<span class="fu">name</span> = <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;name&#39;</span>);
+      <span class="kw">this</span>.$<span class="fu">msg</span> = $(<span class="ch">&#39;[data-msg=&#39;</span> + <span class="kw">this</span>.<span class="fu">name</span> + <span class="ch">&#39;]&#39;</span>);
+
+    },
+
+    <span class="dt">validate</span>: <span class="kw">function</span>() {
+
+      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>(<span class="kw">this</span>.<span class="fu">name</span>, <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">val</span>());
+      <span class="kw">this</span>.$<span class="fu">msg</span>.<span class="fu">text</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">errors</span>[<span class="kw">this</span>.<span class="fu">name</span>] || <span class="ch">&#39;&#39;</span>);
+
+    }
+
+  });
+>>>>>>> upstream/master
 
 <span class="co">//Update a book</span>
 <span class="ot">app</span>.<span class="fu">put</span>( <span class="st">&#39;/api/books/:id&#39;</span>, <span class="kw">function</span>( request, response ) {
@@ -3559,11 +3610,20 @@ package.json</code></pre>
 <p>Now that we are populating our Library from the database using <code>this.collection.fetch()</code>, the <code>initialize()</code> function no longer takes a set of sample data as an argument and doesn’t pass anything to the app.Library constructor. You can now remove the sample data from site/js/app.js, which should reduce it to a single statement which creates the LibraryView:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// site/js/app.js</span>
 
+<<<<<<< HEAD
 <span class="kw">var</span> app = app || {};
+=======
+  $(<span class="ch">&#39;input&#39;</span>).<span class="fu">each</span>(<span class="kw">function</span>() {
+
+    <span class="kw">new</span> Field({<span class="dt">el</span>: <span class="kw">this</span>, <span class="dt">model</span>: user});
+
+  });
+>>>>>>> upstream/master
 
 <span class="fu">$</span>(<span class="kw">function</span>() {
     <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">LibraryView</span>();
 });</code></pre>
+<<<<<<< HEAD
 <p>We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event, as requested by the <code>reset: true</code> option, and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:</p>
 <figure>
 <img src="img/chapter5-9.png" />
@@ -3749,6 +3809,54 @@ package.json</code></pre>
 
     <span class="co">// This alert is going to demonstrate a problem</span>
     <span class="fu">alert</span>(<span class="st">&#39;We`re rendering the view&#39;</span>);
+=======
+<p>This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field.</p>
+<p><strong>Note</strong>: A <a href="http://jsbin.com/afetez/2/edit">demo</a> of the above solution by <a href="http://github.com/braddunbar">@braddunbar</a> is also available.</p>
+<p>Unfortunately, this solution forces each form field to be validated every time a blur event is fired. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.</p>
+<p>A potentially better alternative to the above solution is to use <a href="http://github.com/gfranko">@gfranko</a>'s <a href="https://github.com/gfranko/Backbone.validateAll">Backbone.validateAll</a> plugin, which was specifically created to provide an option to validate only Model properties that are currently being set/saved.</p>
+<p>Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Create a new User Model</span>
+<span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+  <span class="co">// RegEx Patterns</span>
+  <span class="dt">patterns</span>: {
+
+    <span class="dt">specialCharacters</span>: <span class="st">&quot;[^a-zA-Z 0-9]+&quot;</span>,
+
+    <span class="dt">digits</span>: <span class="st">&quot;[0-9]&quot;</span>,
+
+    <span class="dt">email</span>: <span class="st">&quot;^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$&quot;</span>
+  },
+
+  <span class="co">// Validators</span>
+  <span class="dt">validators</span>: {
+
+    <span class="dt">minLength</span>: <span class="kw">function</span>(value, minLength) {
+
+      <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &gt;= minLength;
+
+    },
+
+    <span class="dt">maxLength</span>: <span class="kw">function</span>(value, maxLength) {
+
+      <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &lt;= maxLength;
+
+    },
+
+    <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
+
+<span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.email);</span>
+
+    },
+
+    <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
+
+<span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);</span>
+
+    },
+    ...
+>>>>>>> upstream/master
 
   }
 });</code></pre>
@@ -3760,6 +3868,7 @@ package.json</code></pre>
   <span class="dt">email</span>: <span class="st">&#39;derick@example.com&#39;</span>
 });
 
+<<<<<<< HEAD
 
 <span class="co">// create the first view instance</span>
 <span class="kw">var</span> zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
@@ -3797,6 +3906,146 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
     <span class="fu">alert</span>(<span class="st">&#39;We`re rendering the view&#39;</span>);
 
   }
+=======
+    <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
+      <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
+
+      <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
+
+<span class="er">        if (!attrs.firstname) errors.firstname = &#39;firstname is required&#39;;</span>
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
+<span class="er">        else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = &#39;firstname cannot contain special characters&#39;;</span>
+
+      }
+
+      <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span> != null) {
+
+<span class="er">        if (!attrs.lastname) errors.lastname = &#39;lastname is required&#39;;</span>
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
+<span class="er">        else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = &#39;lastname cannot contain special characters&#39;;</span>
+
+      }</code></pre>
+<p>This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.</p>
+<p><strong>Note</strong>: A <a href="http://jsbin.com/afetez/11/edit">demo</a> of the above solution by <a href="http://github.com/gfranko">@gfranko</a> is also available.</p>
+<p>It's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the <code>validateAll</code> option to use the behavior defined by the plugin:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> user = <span class="kw">new</span> User();
+<span class="kw">user</span>.<span class="fu">set</span>({ <span class="st">&quot;firstname&quot;</span>: <span class="st">&quot;Greg&quot;</span> }, {<span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
+<p>That's it!</p>
+<p>The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don't. Both solutions presented in this section should work fine however.</p>
+<h1 id="restful-applications"><a name="restfulapps">RESTful Applications</a></h1>
+<h2 id="building-restful-applications-with-backbone"><a name="restful">Building RESTful applications with Backbone</a></h2>
+<p>In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.</p>
+<h2 id="stack-1-building-a-backbone-app-with-node.js-express-mongoose-and-mongodb"><a name="stack1">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a></h2>
+<p>The first stack we'll be looking at is:</p>
+<ul>
+<li><a href="nodejs.org">Node.js</a></li>
+<li><a href="http://expressjs.com/">Express</a></li>
+<li><a href="http://mongoosejs.com/">Mongoose</a></li>
+<li>and <a href="http://www.mongodb.org/">MongoDB</a></li>
+</ul>
+<p>with <a href="http://jade-lang.com/">Jade</a> used optionally as a view/templating engine.</p>
+<h3 id="reviewing-the-stack">Reviewing the stack</h3>
+<p>As you may know, node.js is an event-driven platform (built on the <a href="http://code.google.com/apis/v8/design.html">V8</a> runtime), designed for writing fast, scalable network applications. It's reasonably lightweight, efficient and great for real-time applications that are data-intensive.</p>
+<p>Express is a small web-development framework written with node.js, based on <a href="http://www.sinatrarb.com/">Sinatra</a>. It supports a number of useful features such as intuitive views, robust routing and a focus on high performance.</p>
+<p>Next on the list are MongoDB and Mongoose. MongoDB is an open-source, document-oriented database store designed with scalability and agility in mind. As a <a href="http://en.wikipedia.org/wiki/NoSQL">noSQL</a> database, rather than storing data in tables and rows (something we're very used to doing with relational databases), with MongoDB we instead store JSON-like documents using dynamic schemas. One of the goals of Mongo is to try bridging the gap between key-value stores (speed, scalability) and <a href="http://en.wikipedia.org/wiki/Relational_database">relational</a> databases (rich functionality).</p>
+<p>Mongoose is a JavaScript library that simplifies how we interact with Mongo. Like Express, it's designed to work within the node.js environment and tries to solve some of the complexities with asynchronous data storage by offering a more user-friendly API. It also adds chaining features into the mix, allowing for a slightly more expressive way of dealing with our data.</p>
+<p>Jade is a template engine influenced by Haml (which we'll be looking at later). It's implemented with JavaScript (and also runs under node). In addition to supporting Express out of the box, it boasts a number of useful features including support for mixins, includes, caching, template inheritance and much more. Whilst abstractions like Jade certainly aren't for everyone, our practical will cover working both with and without it.</p>
+<h3 id="practical">Practical</h3>
+<p>For this practical, we're going to once again look at extending the popular Backbone Todo application. Rather than relying on localStorage for data persistence, we're going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found in <code>practicals\stacks\option2</code></p>
+<p><strong>app.js</strong></p>
+<p>(See <a href="https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/app.js">here</a> for the source)</p>
+<p>We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths).</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> application_root = __dirname,
+  express = require(<span class="st">&quot;express&quot;</span>),
+  path = require(<span class="st">&quot;path&quot;</span>),
+  mongoose = require(<span class="ch">&#39;mongoose&#39;</span>);</code></pre>
+<p>Next, create a new Express server. <code>express.createServer()</code> is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> app = <span class="kw">express</span>.<span class="fu">createServer</span>();</code></pre>
+<p>After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: <code>mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]</code></p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">mongoose</span>.<span class="fu">connect</span>(<span class="ch">&#39;mongodb://localhost/my_database&#39;</span>);</code></pre>
+<p>A Mongoose model for any Todo item can now be easily defined by passing a schema instance to <code>mongoose.model</code>. In our case the schema covers a Todo item's <code>text</code> content, its <code>done</code> state and <code>order</code> position in the overall Todo list.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">mongoose</span>.<span class="fu">model</span>(<span class="ch">&#39;Todo&#39;</span>, <span class="kw">new</span> <span class="kw">mongoose</span>.<span class="fu">Schema</span>({
+  <span class="dt">text</span>: <span class="kw">String</span>,
+  <span class="dt">done</span>: <span class="kw">Boolean</span>,
+  <span class="dt">order</span>: <span class="fu">Number</span>
+}));</code></pre>
+<p>The <code>configure()</code> methods allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade <code>app.set('view engine', 'jade')</code>. We can avoid these if we wish to use plain HTML/JS for our templates instead.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">configure</span>(<span class="kw">function</span>(){
+  <span class="co">// the bodyParser middleware parses JSON request bodies</span>
+  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">bodyParser</span>());
+  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">methodOverride</span>());
+<span class="er">  app.use(app.router);</span>
+  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">static</span>(<span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;public&quot;</span>)));
+  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">errorHandler</span>({ <span class="dt">dumpExceptions</span>: <span class="kw">true</span>, <span class="dt">showStack</span>: <span class="kw">true</span> }));
+  <span class="kw">app</span>.<span class="fu">set</span>(<span class="ch">&#39;views&#39;</span>, <span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;views&quot;</span>));
+  <span class="kw">app</span>.<span class="fu">set</span>(<span class="ch">&#39;view engine&#39;</span>, <span class="ch">&#39;jade&#39;</span>)
+});</code></pre>
+<p>Should you prefer to switch out Jade for an alternative view engine, this can be done fairly trivially. See the section under 'Templating' here: https://github.com/joyent/node/wiki/modules. For example, to switch to EJS, you would simply write <code>app.set('view engine', 'ejs')</code></p>
+<p>Express makes use of common HTTP verbs (get, put, post etc.) to provide easy to use, expressive routing API based on CRUD (Create, Read, Update and Delete). Below for example, we can define what happens when the browser requests the root '/'. As a trivial route in this application, it doesn't do anything particularly exciting, however getters typically read or retrieve data.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">res</span>.<span class="fu">send</span>(<span class="ch">&#39;Hello World&#39;</span>);
+});</code></pre>
+<p>Onto something a little more useful and in our next route, navigating to '/todo' will actually render our Jade view 'todo.jade', as seen in the callback. Additional configuration values can be passed as the second parameter, such as the custom title specified below.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/todo&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">res</span>.<span class="fu">render</span>(<span class="ch">&#39;todo&#39;</span>, {<span class="dt">title</span>: <span class="st">&quot;Our sample application&quot;</span>});
+});</code></pre>
+<p>Next, we can see the first of our '/api/' routes.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api/todos&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">find</span>(<span class="kw">function</span>(err, todos) {
+    <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todos);
+  });
+});</code></pre>
+<p>The callback to our next route supports querying for todos based on a specific ID. The route string itself (once compiled) will be converted from '/api/todos/:id' to a regular expression. As you might have guessed, this is a hint that routes can also be regular expression literals if we wished to do something more complex.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api/todos/:id&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, todo) {
+    <span class="kw">if</span> (!err) {
+      <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todo);
+    }
+  });
+});</code></pre>
+<p>Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of its three attributes (text, done, order) easily.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">put</span>(<span class="ch">&#39;/api/todos/:id&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, todo) {
+    <span class="kw">todo</span>.<span class="fu">text</span> = <span class="kw">req.body</span>.<span class="fu">text</span>;
+    <span class="kw">todo</span>.<span class="fu">done</span> = <span class="kw">req.body</span>.<span class="fu">done</span>;
+    <span class="kw">todo</span>.<span class="fu">order</span> = <span class="kw">req.body</span>.<span class="fu">order</span>;
+    <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">save</span>(<span class="kw">function</span>(err) {
+      <span class="kw">if</span> (!err) {
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;updated&quot;</span>);
+      }
+      <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todo);
+    });
+  });
+});</code></pre>
+<p>We've so far covered requesting todos and updating them, but a core part of the application requires us to insert (or add) new todos to our data-store. Below we can create new <code>Todo</code> models and simply save them.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">post</span>(<span class="ch">&#39;/api/todos&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">var</span> todo;
+  todo = <span class="kw">new</span> Todo({
+    <span class="dt">text</span>: <span class="kw">req.body</span>.<span class="fu">text</span>,
+    <span class="dt">done</span>: <span class="kw">req.body</span>.<span class="fu">done</span>,
+    <span class="dt">order</span>: <span class="kw">req.body</span>.<span class="fu">order</span>
+  });
+  <span class="kw">todo</span>.<span class="fu">save</span>(<span class="kw">function</span>(err) {
+    <span class="kw">if</span> (!err) {
+      <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;created&quot;</span>);
+    }
+  });
+  <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todo);
+});</code></pre>
+<p>We of course also want to support deleting todos (e.g if a todo has been 'cleared', it should be deleted). This also works based on a specific todo ID.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">delete</span>(<span class="ch">&#39;/api/todos/:id&#39;</span>, <span class="kw">function</span>(req, res){
+  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, todo) {
+    <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">remove</span>(<span class="kw">function</span>(err) {
+      <span class="kw">if</span> (!err) {
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;removed&quot;</span>);
+        <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(<span class="ch">&#39;&#39;</span>)
+      }
+    });
+  });
+>>>>>>> upstream/master
 });</code></pre>
 <p>Then call <code>close</code> on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the <code>listenTo</code> and <code>stopListening</code> functions, see the earlier Backbone Basics chapter and Derick’s post on <a href="http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/">Managing Events As Relationships, Not Just Resources</a>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Jeremy = <span class="kw">new</span> <span class="fu">Person</span>({
